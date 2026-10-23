@@ -79,6 +79,13 @@ function avoidText(g,e,ctx){
   if(hit)continue;
   const cost=amount;if(cost<bestCost){bestCost=cost;smooth={...g,c1x,c1y,c2x,c2y,points:Array.from({length:13},(_,i)=>ps[Math.round(i*80/12)]),bounds:{x0:Math.min(...ps.map(p=>p.x)),x1:Math.max(...ps.map(p=>p.x)),y0:Math.min(...ps.map(p=>p.y)),y1:Math.max(...ps.map(p=>p.y))}}}
  }
+ if(!smooth)for(const b1 of [-600,-360,-200,-90,0,90,200,360,600])for(const b2 of [-600,-360,-200,-90,0,90,200,360,600]){
+  const c1x=g.ax+dx/3+nx*b1,c1y=g.ay+dy/3+ny*b1,c2x=g.ax+dx*2/3+nx*b2,c2y=g.ay+dy*2/3+ny*b2,ps=[];
+  let prev={x:g.ax,y:g.ay},hit=false;
+  for(let k=0;k<=80;k++){const t=k/80,u=1-t,p={x:u*u*u*g.ax+3*u*u*t*c1x+3*u*t*t*c2x+t*t*t*g.bx,y:u*u*u*g.ay+3*u*u*t*c1y+3*u*t*t*c2y+t*t*t*g.by};if(k&&rects.some(r=>segmentBlocked(prev,p,r))){hit=true;break}ps.push(p);prev=p}
+  const cost=Math.abs(b1)+Math.abs(b2)+Math.abs(b1-b2)*.1;
+  if(!hit&&cost<bestCost){bestCost=cost;smooth={...g,c1x,c1y,c2x,c2y,points:Array.from({length:13},(_,i)=>ps[Math.round(i*80/12)]),bounds:{x0:Math.min(...ps.map(p=>p.x)),x1:Math.max(...ps.map(p=>p.x)),y0:Math.min(...ps.map(p=>p.y)),y1:Math.max(...ps.map(p=>p.y))}}}
+ }
  if(smooth)return smooth;
  const points=[{x:g.ax,y:g.ay},{x:g.bx,y:g.by}];
  for(const r of rects)for(const [x,y]of [[r.x-18,r.y-18],[r.x+r.w+18,r.y-18],[r.x+r.w+18,r.y+r.h+18],[r.x-18,r.y+r.h+18]])
