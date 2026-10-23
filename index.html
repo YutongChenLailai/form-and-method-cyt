@@ -77,12 +77,23 @@ function avoidText(g,e,ctx){
  }
  if(!Number.isFinite(dist[1]))return g;
  const route=[];for(let i=1;i>=0;i=from[i]){route.unshift(points[i]);if(i===0)break}
- let d='M'+route[0].x+' '+route[0].y;
+
+ let d='M'+route[0].x+' '+route[0].y,cursor=route[0];
+ function smoothTo(p){const dx=p.x-cursor.x,dy=p.y-cursor.y;d+=' C'+(cursor.x+dx/3)+' '+(cursor.y+dy/3)+' '+(cursor.x+dx*2/3)+' '+(cursor.y+dy*2/3)+' '+p.x+' '+p.y;cursor=p}
  for(let i=1;i<route.length-1;i++){
-  const a=route[i-1],b=route[i],c=route[i+1],l=Math.hypot(b.x-a.x,b.y-a.y),m=Math.hypot(c.x-b.x,c.y-b.y),radius=Math.min(12,l/4,m/4);
-  d+=' L'+(b.x-(b.x-a.x)*radius/l)+' '+(b.y-(b.y-a.y)*radius/l)+' Q'+b.x+' '+b.y+' '+(b.x+(c.x-b.x)*radius/m)+' '+(b.y+(c.y-b.y)*radius/m);
+  const a=route[i-1],b=route[i],c=route[i+1],l=Math.hypot(b.x-a.x,b.y-a.y),m=Math.hypot(c.x-b.x,c.y-b.y);
+  let radius=Math.min(110,l*.48,m*.48),entry,exit;
+  for(let attempt=0;attempt<10;attempt++){
+   entry={x:b.x-(b.x-a.x)*radius/l,y:b.y-(b.y-a.y)*radius/l};
+   exit={x:b.x+(c.x-b.x)*radius/m,y:b.y+(c.y-b.y)*radius/m};
+   let prev=entry,blocked=false;
+   for(let k=1;k<=40;k++){const t=k/40,u=1-t,p={x:u*u*entry.x+2*u*t*b.x+t*t*exit.x,y:u*u*entry.y+2*u*t*b.y+t*t*exit.y};if(rects.some(r=>segmentBlocked(prev,p,r)))blocked=true;prev=p}
+   if(!blocked)break;radius*=.65;
+  }
+  smoothTo(entry);
+  d+=' C'+(entry.x+(b.x-entry.x)*2/3)+' '+(entry.y+(b.y-entry.y)*2/3)+' '+(exit.x+(b.x-exit.x)*2/3)+' '+(exit.y+(b.y-exit.y)*2/3)+' '+exit.x+' '+exit.y;cursor=exit;
  }
- d+=' L'+g.bx+' '+g.by;
+ smoothTo({x:g.bx,y:g.by});
  return {...g,path:d,points:Array.from({length:13},(_,i)=>route[Math.min(route.length-1,Math.round(i*(route.length-1)/12))]),bounds:{x0:Math.min(...route.map(p=>p.x)),x1:Math.max(...route.map(p=>p.x)),y0:Math.min(...route.map(p=>p.y)),y1:Math.max(...route.map(p=>p.y))}};
 }
 function positionChrome(){
