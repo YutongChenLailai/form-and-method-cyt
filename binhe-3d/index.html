@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BINHE / 1985 — Spatial Atlas</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e9e5d9;color:#25362e;font:14px/1.5 system-ui,sans-serif}button{font:inherit;cursor:pointer;color:inherit}header{height:70px;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #c8c6b8;background:#f7f5ed}h1{font-size:22px;letter-spacing:-1px;margin:0}small,.muted{color:#66736a;font-size:11px}main{position:relative;height:calc(100dvh - 70px);min-height:400px;overflow:hidden}#viewport{position:absolute;inset:0}canvas{display:block;touch-action:none}#tools{position:absolute;left:20px;top:20px;display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 40px)}button{border:1px solid #a9b1a2;background:#f8f6ee;padding:9px 14px;border-radius:3px}button.active,button:hover{background:#314a3b;color:#fff;border-color:#314a3b}#info{position:absolute;left:20px;bottom:24px;max-width:330px;background:#f7f5edeb;border:1px solid #c0c4b5;padding:17px 18px;box-shadow:0 4px 24px #35402a15}#info h2{font-size:21px;margin:4px 0 8px;letter-spacing:-.5px}#info p{font-size:12px;margin:5px 0}#map{position:absolute;right:20px;bottom:24px;width:340px;background:#f7f5edeb;border:1px solid #c0c4b5;padding:12px}#map svg{width:100%;display:block;background:#e7e5d9;cursor:crosshair}#map .legend{display:flex;justify-content:space-between;font-size:10px;margin-bottom:7px}#places{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}#places button{padding:5px 8px;font-size:11px}#cross{position:absolute;left:50%;top:50%;color:white;font-size:24px;pointer-events:none;display:none;text-shadow:0 1px 4px #222}#walkpad{position:absolute;right:20px;top:84px;display:none;grid-template-columns:repeat(3,42px);gap:4px}#walkpad button{padding:10px;touch-action:none}#help{position:absolute;top:82px;left:20px;font-size:11px;background:#f7f5eddd;padding:7px 10px;pointer-events:none}#load{position:absolute;inset:0;display:grid;place-items:center;background:#eee9dd;z-index:5}dialog{max-width:min(590px,90vw);background:#f7f5ed;border:1px solid #777f70;padding:26px;color:#25362e}dialog p{margin:10px 0}#credit{font-size:10px;text-align:right}@media(max-width:720px){header{padding:9px 12px;height:62px}h1{font-size:17px}main{height:calc(100dvh - 62px)}#credit{max-width:120px}#tools{left:8px;top:8px;gap:4px}#tools button{padding:7px 9px;font-size:11px}#help{left:8px;top:66px;max-width:70%}#info{left:8px;bottom:8px;padding:10px;max-width:48%;font-size:10px}#info h2{font-size:15px}#info p{font-size:10px}#map{right:8px;bottom:8px;width:47%;padding:7px}#map .legend{font-size:9px}#places button{font-size:9px;padding:4px}#walkpad{right:8px;top:106px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script></head>
+<body><header><div><small>SHENZHEN · ARCHITECTURAL RESEARCH / 03</small><h1>滨河新村 <span style="font-weight:400">BINHE / 1985</span></h1></div><div id="credit">空间复原研究原型<br>Archive-informed reconstruction · v0.2</div></header>
+<main><div id="viewport"></div><div id="load">正在加载三维空间…（需联网加载 Three.js）</div><div id="tools"><button id="orbit" class="active">鸟瞰 / Orbit</button><button id="ground">地面漫游</button><button id="deck">二层连廊</button><button id="top">总平面</button><button id="shot">保存截图</button><button id="source">资料与精度</button></div><div id="help">拖动旋转 · 滚轮缩放 · 右键平移</div><div id="cross">+</div><div id="walkpad"><span></span><button data-key="KeyW">↑</button><span></span><button data-key="KeyA">←</button><button data-key="KeyS">↓</button><button data-key="KeyD">→</button></div>
+<section id="info"><small id="section">01 / MASTERPLAN</small><h2 id="title">大空间住宅组团</h2><p id="description">1985年规划的三处公共空间、南北蝶式住宅、东西Y形住宅，以及中北部三幢高层。选择地图节点进入场景。</p><small>规划依据：陈达昌《深圳滨河小区规划设计》图1–5。几何细部为估计。</small></section>
+<section id="map"><div class="legend"><b>总平面 / SITE PLAN</b><span>北 ↑ · 432 × 140 m</span></div><svg id="plan" viewBox="-216 -70 432 140" aria-label="模型总平面"></svg><div id="places"></div></section>
+<dialog id="about"><h2>资料与复原边界</h2><p><b>原始依据：</b>陈达昌《深圳滨河小区规划设计——大空间住宅小区实例》，1985，图1总鸟瞰、图2总平面、图3连廊、图4楼梯、图5住宅户型，印刷页20–24。</p><p>用地东西432m、南北140m；南北蝶式组团，东西Y式住宅；中北三幢30层钻石形高层；三处相互渗透的公共空间、白色二层连廊、林荫轴线和屋顶绿化。</p><p>立面采用原文色彩描述：金黄色瓷片檐口、略透红色的白墙、米黄色马赛克阳台、深褐花池、黑铁栏杆。具体RGB值是近似的。</p><p><b>不是测绘数字孪生：</b>模型依据扫描总平面人工估读布局，不等于逐栋实测；住宅具体数量、楼高（除30层高层外）、连廊宽高、道路、树木及设施位置均为示意性推定。展示的是1985年设计意图，不声称为某一历史日期的建成实况。未使用私人访谈或居民身份资料。</p><p>键盘 WASD/方向键移动，拖动看向四周；在二层模式沿连廊行走。地图节点可切换视角。截图供研究对照。</p><form method="dialog"><button>关闭</button></form></dialog></main>
+<script type="module">
+import * as T from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const $=id=>document.getElementById(id);
+const scene=new T.Scene();scene.background=new T.Color('#d9e4de');scene.fog=new T.Fog('#d9e4de',250,900);
+const camera=new T.PerspectiveCamera(55,1,.1,1600);camera.position.set(260,220,245);
+const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;$('viewport').append(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,4,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2-.015;controls.minDistance=6;controls.maxDistance=750;controls.update();
+scene.add(new T.HemisphereLight(0xfff4db,0x839688,2.0));const sun=new T.DirectionalLight(0xfff1d7,2.2);sun.position.set(-100,180,95);scene.add(sun);
+const P={wall:'#ead9d2',gold:'#d9a83c',balcony:'#e1c58e',rail:'#343b36',planter:'#6f4e3e',glass:'#617d83',roof:'#c5b7a3',ground:'#d6d0c1',paving:'#bcb9af',white:'#f1eee2',lawn:'#799761',leaf:'#50784c',leaf2:'#819d52',trunk:'#715743',road:'#8a9290',water:'#6ba5ab',concrete:'#a9a59c'};
+const cube=new T.BoxGeometry(1,1,1), material={}, batches={}, dummy=new T.Object3D(), obstacles=[], footprints=[], deckSegments=[];
+function mat(c){return material[c]??=new T.MeshToonMaterial({color:c})}
+function box(x,y,z,w,h,d,c,rot=0){if(w<=0||h<=0||d<=0)return;const a=batches[c]??=[];dummy.position.set(x,y,z);dummy.rotation.set(0,rot,0);dummy.scale.set(w,h,d);dummy.updateMatrix();a.push(dummy.matrix.clone());}
+function shapeMesh(g,c,x,y,z,rx=0){const m=new T.Mesh(g,mat(c));m.position.set(x,y,z);m.rotation.x=rx;scene.add(m);return m}
+function outline(x,y,z,w,h,d,r=0){const l=new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(w,h,d)),new T.LineBasicMaterial({color:0x6f7165,transparent:true,opacity:.25}));l.position.set(x,y,z);l.rotation.y=r;scene.add(l)}
+function local(x,z,dx,dz,r){return [x+dx*Math.cos(r)+dz*Math.sin(r),z-dx*Math.sin(r)+dz*Math.cos(r)]}
+function wing(x,z,w,d,floors,r=0,base=0,mark=true){
+ const h=floors*3.1;
+ function b(dx,yy,dz,ww,hh,dd,col){let p=local(x,z,dx,dz,r);box(p[0],base+yy,p[1],ww,hh,dd,col,r)}
+ b(0,h/2,0,w,h,d,P.wall);b(0,h+.16,0,w+.5,.32,d+.5,P.gold);b(0,h+.36,0,w-.3,.14,d-.3,P.roof);
+ outline(x,base+h/2,z,w,h,d,r);if(mark){obstacles.push({x,z,w,d,r});footprints.push({x,z,w,d,r})}
+ const n=Math.max(2,Math.round(w/3.4)), side=Math.max(1,Math.round(d/3.5));
+ for(let f=0;f<floors;f++){let y=f*3.1;
+  for(let sign of [-1,1]){
+   for(let i=0;i<n;i++){let dx=(i-(n-1)/2)*w/n;
+    b(dx,y+1.75,sign*(d/2+.035),1.45,1.45,.12,P.glass);
+    if(f>0&&i%2===0){b(dx,y+.48,sign*(d/2+.65),2.35,.28,1.28,P.balcony);b(dx,y+.96,sign*(d/2+1.23),2.35,.72,.13,P.balcony);b(dx,y+1.34,sign*(d/2+1.25),2.35,.08,.09,P.rail);}
+   }
+   for(let i=0;i<side;i++){let dz=(i-(side-1)/2)*d/side;b(sign*(w/2+.035),y+1.7,dz,.1,1.35,1.35,P.glass)}
+  }
+ }
+}
+function butterfly(x,z,r=0){let p=local(x,z,0,0,r);wing(p[0],p[1],6,17,6,r);
+ for(let sign of [-1,1])for(let end of [-1,1]){p=local(x,z,sign*7.5,end*5.6,r);wing(p[0],p[1],12.5,8.2,6,r+sign*end*.23)}
+}
+function yblock(x,z,r){wing(x,z,7.5,10,6,r);for(let i=0;i<3;i++){const a=r+i*2*Math.PI/3,p=local(x,z,0,-7.7,a);wing(p[0],p[1],9,12,6,a)}}
+function tower(x,z){wing(x,z,15,15,30,Math.PI/4,3.3);wing(x,z,8,8,1,0,96.3,false)}
+// Masterplan traced approximately from Fig. 2: perimeter housing, north-central podium, three courts.
+box(0,-.8,0,540,1,240,P.ground);box(0,-.24,0,432,.3,140,'#d8d6c7');
+box(0,-.08,-78,475,.12,12,P.road);box(0,-.08,78,475,.12,12,P.road);box(-224,-.08,0,11,.12,170,P.road);box(224,-.08,0,11,.12,170,P.road);
+for(let x of [-184,-148,-112,-76,-40,40,76,112,148,184])butterfly(x,55,Math.PI);
+for(let x of [-184,-148,-112,-76,76,112,148,184])butterfly(x,-55);
+for(let z of [-23,13]){yblock(-199,z,-Math.PI/2);yblock(199,z,Math.PI/2)}
+box(0,1.65,-49,121,3.3,37,P.concrete);box(0,3.31,-49,120,.13,36,P.lawn);obstacles.push({x:0,z:-49,w:121,d:37,r:0});footprints.push({x:0,z:-49,w:121,d:37,r:0});
+for(let x of [-39,0,39])tower(x,-49);
+function court(x,z,w,d){box(x,.03,z,w,.12,d,P.paving);box(x,.11,z,w-7,.08,d-7,P.lawn)}
+court(-112,1,134,73);court(112,1,134,73);box(0,.06,8,72,.13,83,'#c9c0ad');box(0,.14,61,9,.13,18,P.paving);
+function disc(x,z,r,h,c,y=.1){return shapeMesh(new T.CylinderGeometry(r,r,h,48),c,x,y+h/2,z)}
+disc(0,9,18,.25,P.planter);disc(0,9,15.7,.27,P.paving);disc(0,9,12.2,.04,'#aab8b7',.4);
+for(let a=0;a<Math.PI*2;a+=Math.PI/12){box(Math.cos(a)*16.8,.6,9+Math.sin(a)*16.8,2.5,.45,.65,P.white,-a+Math.PI/2)}
+box(-30,.12,10,13,.24,25,P.planter);box(-30,.29,10,11,.08,23,P.water);
+box(112,.17,4,37,.12,22,'#ba8e6c');box(112,.24,4,35,.03,20,'#bd9778');for(let s of [-1,1]){box(112,.27,4+s*10,35,.04,.12,P.white);box(112+s*17.5,.27,4,.12,.04,20,P.white)}box(112,.27,4,.13,.04,20,P.white);disc(112,4,3,.04,'#bc9b7e',.27);
+for(let i=0;i<3;i++){disc(-125+i*10,-4+Math.sin(i)*4,8,.08,P.water,.12)}
+function walkway(x,z,w,d){box(x,3.05,z,w,.5,d,P.white);box(x,3.32,z,w,.06,d,'#c4bba8');let horizontal=w>d;deckSegments.push({x,z,w,d});let len=horizontal?w:d;
+ for(let a=-len/2+1.5;a<len/2;a+=6){let xx=horizontal?x+a:x,zz=horizontal?z:z+a;for(let s of [-1,1])box(xx+(horizontal?0:s*(w/2-.55)),1.4,zz+(horizontal?s*(d/2-.55):0),.65,2.8,.65,P.concrete)}
+ for(let s of [-1,1]){if(horizontal){box(x,3.77,z+s*(d/2-.16),w,.86,.29,P.white);box(x,4.24,z+s*(d/2-.16),w,.08,.16,P.rail)}else{box(x+s*(w/2-.16),3.77,z,.29,.86,d,P.white);box(x+s*(w/2-.16),4.24,z,.16,.08,d,P.rail)}}
+}
+walkway(0,41,386,5.8);walkway(-122,-38,146,5.8);walkway(122,-38,146,5.8);walkway(0,-34,100,5.8);walkway(-190,1.5,5.8,79);walkway(190,1.5,5.8,79);walkway(-48,1.5,5.8,79);walkway(48,1.5,5.8,79);
+for(let x of [-160,-80,80,160])walkway(x,48,4.8,14);
+function stairs(x,z,dir=1){for(let i=0;i<18;i++){let h=(i+1)*3.3/18;box(x,h/2,z+dir*i*.37,3.2,h,.4,P.white)}for(let s of [-1,1])for(let i=0;i<18;i+=2){box(x+s*1.55,(i+1)*3.3/18+.5,z+dir*i*.37,.09,1,.09,P.rail)}}
+for(let x of [-150,-52,52,150])stairs(x,32.5,1);
+for(let x of [-164,-108,108,164])stairs(x,-29,-1);
+// undercroft bays + roof garden furniture, representative rather than surveyed.
+for(let x of [-175,-163,75,87,99]){box(x,1.3,41,9,2.6,4.7,'#b9aca0');box(x,1.5,37.95,6.8,1.9,.13,P.glass);box(x,2.6,37.8,8,.35,.23,P.planter)}
+function bench(x,z,r=0){box(x,.5,z,2.4,.16,.62,P.planter,r);for(let s of [-1,1]){const p=local(x,z,s*.85,0,r);box(p[0],.2,p[1],.22,.4,.5,P.concrete,r)}}
+let seed=1337;function rnd(){seed=(1664525*seed+1013904223)>>>0;return seed/4294967296}
+function tree(x,z,h=6){shapeMesh(new T.CylinderGeometry(.12,.28,h*.62,7),P.trunk,x,h*.31,z);for(let i=0;i<3;i++){let m=shapeMesh(new T.IcosahedronGeometry(h*.37,1),i%2?P.leaf2:P.leaf,x+(rnd()-.5)*2,h*.68+i*.24,z+(rnd()-.5)*2);m.scale.set(1.2,.8,1.05)}}
+for(let side of [-1,1]){for(let i=0;i<25;i++){let x=side*(66+rnd()*105),z=-28+rnd()*54;if(side===1&&Math.abs(x-112)<23&&Math.abs(z-4)<15)continue;if(side===-1&&Math.abs(x+115)<27&&Math.abs(z)<13)continue;tree(x,z,4.2+rnd()*3.2)}for(let i=0;i<8;i++){let z=-26+i*8;tree(side*25,z,4.4+rnd()*1.5);bench(side*22,z+.8,Math.PI/2)}}
+for(let i=0;i<24;i++){tree(-207+i*18,87,5+rnd()*2)}
+for(let x of [-170,-135,-85,85,135,170]){bench(x,30);box(x,3.55,41,2.6,.48,1.2,P.planter);box(x,3.85,41,2.35,.17,1,P.leaf)}
+for(let x of [-115,115]){box(x,.12,-26,5,.2,5,P.planter);for(let dx of [-2,2])for(let dz of [-2,2])box(x+dx,1.7,-26+dz,.22,3.1,.22,P.rail);shapeMesh(new T.ConeGeometry(4.2,1.5,4),P.gold,x,3.8,-26).rotation.y=Math.PI/4}
+for(const [c,arr] of Object.entries(batches)){const m=new T.InstancedMesh(cube,mat(c),arr.length);arr.forEach((mx,i)=>m.setMatrixAt(i,mx));m.instanceMatrix.needsUpdate=true;scene.add(m)}
+const spots=[
+{key:'axis',label:'中轴 / 圆形场',x:0,z:30,y:0,yaw:0,title:'中央轴线与圆形溜冰场',desc:'原规划中由林荫道、天桥、圆形廊道与公共服务空间构成。设施具体形态为示意。'},
+{key:'west',label:'西侧庭院',x:-112,z:24,y:0,yaw:0,title:'西侧共享庭院',desc:'大空间设计让绿地集中，树石、水池及活动空间形成独立而渗透的庭院。'},
+{key:'east',label:'东侧庭院',x:112,z:28,y:0,yaw:0,title:'东侧活动庭院',desc:'原平面中的规则活动场地与住宅组团。具体球场样式是推定。'},
+{key:'bridge',label:'二层连廊',x:-105,z:41,y:3.35,yaw:-Math.PI/2,title:'二层公共步行系统',desc:'连廊与住宅二层相接，底层可用于通行、停车或服务设施。模型采用约3.35m平台高度，并非实测。'},
+{key:'towers',label:'北侧高层',x:0,z:-18,y:0,yaw:0,title:'中北部三幢30层高层',desc:'钻石形高层与多层住宅共同形成中轴与天际线。塔楼单元形状采用简化估读。'}];
+const ns='http://www.w3.org/2000/svg',svg=$('plan');
+function sr(tag,attrs){const el=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));svg.append(el);return el}
+sr('rect',{x:-215,y:-69,width:430,height:138,fill:'#dad8ca',stroke:'#677768','stroke-width':1});
+for(const x of [-112,112])sr('rect',{x:x-66,y:-35,width:132,height:72,rx:4,fill:'#a1b38c'});
+sr('circle',{cx:0,cy:9,r:18,fill:'#d4bda1',stroke:'#846b54','stroke-width':1});sr('circle',{cx:0,cy:9,r:12,fill:'#a6b6b2'});
+for(const f of footprints)sr('rect',{x:f.x-f.w/2,y:f.z-f.d/2,width:f.w,height:f.d,transform:'rotate('+(-f.r*180/Math.PI)+' '+f.x+' '+f.z+')',fill:'#debd72',stroke:'#887753','stroke-width':.65});
+for(const d of deckSegments)sr('rect',{x:d.x-d.w/2,y:d.z-d.d/2,width:d.w,height:d.d,fill:'#f9f8eb',stroke:'#9d9e91','stroke-width':.6});
+const marker=sr('circle',{cx:0,cy:0,r:3,fill:'#b64c35',stroke:'#fff','stroke-width':1.2});marker.style.pointerEvents='none';
+let mode='orbit',yaw=0,pitch=0;const keys=new Set(),clock=new T.Clock();let currentLevel=0;
+function setMode(m){mode=m;controls.enabled=m==='orbit'||m==='top';for(const k of ['orbit','ground','deck','top'])$(k).classList.toggle('active',k===m);const walking=!controls.enabled;$('walkpad').style.display=walking?'grid':'none';$('cross').style.display=walking?'block':'none';$('help').textContent=walking?'WASD / 方向键移动 · 拖动观察 · 地图切换节点':'拖动旋转 · 滚轮缩放 · 右键平移';keys.clear();if(m==='orbit'){camera.position.set(265,220,245);controls.target.set(0,0,0);controls.update()}if(m==='top'){camera.position.set(0,340,.01);controls.target.set(0,0,0);controls.update()}if(walking){const s=m==='deck'?spots[3]:spots[0];place(s)}}
+function orient(){camera.rotation.order='YXZ';camera.rotation.set(pitch,yaw,0,'YXZ')}
+function place(s){currentLevel=s.y;camera.position.set(s.x,s.y+1.65,s.z);yaw=s.yaw;pitch=0;orient();$('section').textContent='FIELD VIEW / '+s.key.toUpperCase();$('title').textContent=s.title;$('description').textContent=s.desc}
+function jump(s){setMode(s.y?'deck':'ground');place(s)}
+for(const s of spots){const c=sr('circle',{cx:s.x,cy:s.z,r:3.3,fill:'#324a3c',stroke:'#fff','stroke-width':1});c.addEventListener('click',e=>{e.stopPropagation();jump(s)});const b=document.createElement('button');b.textContent=s.label;b.onclick=()=>jump(s);$('places').append(b)}
+function blocked(x,z){if(Math.abs(x)>213||Math.abs(z)>68)return true;return obstacles.some(o=>{let p=local(0,0,x-o.x,z-o.z,-o.r);return Math.abs(p[0])<o.w/2+.35&&Math.abs(p[1])<o.d/2+.35})}
+function onDeck(x,z){return deckSegments.some(o=>Math.abs(x-o.x)<o.w/2-.4&&Math.abs(z-o.z)<o.d/2-.4)}
+for(const k of ['orbit','ground','deck','top'])$(k).onclick=()=>setMode(k);
+$('source').onclick=()=>$('about').showModal();$('shot').onclick=()=>{renderer.render(scene,camera);const a=document.createElement('a');a.download='binhe-'+mode+'.png';a.href=renderer.domElement.toDataURL('image/png');a.click()};
+window.addEventListener('keydown',e=>{if(!controls.enabled&&['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)){e.preventDefault();keys.add(e.code)}});window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>keys.clear());
+document.querySelectorAll('[data-key]').forEach(b=>{b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.key)};b.onpointerup=b.onpointercancel=()=>keys.delete(b.dataset.key);b.onlostpointercapture=()=>keys.delete(b.dataset.key)});
+let drag=false,lastX=0,lastY=0;const can=renderer.domElement;can.addEventListener('pointerdown',e=>{if(controls.enabled)return;drag=true;lastX=e.clientX;lastY=e.clientY;can.setPointerCapture(e.pointerId)});can.addEventListener('pointermove',e=>{if(!drag||controls.enabled)return;yaw-=(e.clientX-lastX)*.0035;pitch=Math.max(-1.35,Math.min(1.35,pitch-(e.clientY-lastY)*.0035));lastX=e.clientX;lastY=e.clientY;orient()});can.addEventListener('pointerup',()=>drag=false);can.addEventListener('pointercancel',()=>drag=false);can.addEventListener('lostpointercapture',()=>drag=false);
+function resize(){let w=$('viewport').clientWidth,h=$('viewport').clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe($('viewport'));resize();
+function tick(){requestAnimationFrame(tick);let dt=Math.min(clock.getDelta(),.05);if(controls.enabled){controls.update()}else{let f=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),s=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);if(f||s){let n=Math.hypot(f,s),speed=5*dt/n,dx=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*speed,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*speed;const allow=(x,z)=>mode==='deck'?onDeck(x,z):!blocked(x,z);if(allow(camera.position.x+dx,camera.position.z))camera.position.x+=dx;if(allow(camera.position.x,camera.position.z+dz))camera.position.z+=dz}}marker.setAttribute('cx',Math.max(-213,Math.min(213,camera.position.x)));marker.setAttribute('cy',Math.max(-68,Math.min(68,camera.position.z)));renderer.render(scene,camera)}
+$('load').style.display='none';tick();
+</script></body></html>
