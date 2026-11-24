@@ -4,35 +4,46 @@
 *{box-sizing:border-box}body{margin:0;background:#e9e5d9;color:#25362e;font:14px/1.5 system-ui,sans-serif}button{font:inherit;cursor:pointer;color:inherit}header{height:70px;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #c8c6b8;background:#f7f5ed}h1{font-size:22px;letter-spacing:-1px;margin:0}small,.muted{color:#66736a;font-size:11px}main{position:relative;height:calc(100dvh - 70px);min-height:400px;overflow:hidden}#viewport{position:absolute;inset:0}canvas{display:block;touch-action:none}#tools{position:absolute;left:20px;top:20px;display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 40px)}button{border:1px solid #a9b1a2;background:#f8f6ee;padding:9px 14px;border-radius:3px}button.active,button:hover{background:#314a3b;color:#fff;border-color:#314a3b}#info{position:absolute;left:20px;bottom:24px;max-width:330px;background:#f7f5edeb;border:1px solid #c0c4b5;padding:17px 18px;box-shadow:0 4px 24px #35402a15}#info h2{font-size:21px;margin:4px 0 8px;letter-spacing:-.5px}#info p{font-size:12px;margin:5px 0}#map{position:absolute;right:20px;bottom:24px;width:340px;background:#f7f5edeb;border:1px solid #c0c4b5;padding:12px}#map svg{width:100%;display:block;background:#e7e5d9;cursor:crosshair}#map .legend{display:flex;justify-content:space-between;font-size:10px;margin-bottom:7px}#places{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}#places button{padding:5px 8px;font-size:11px}#cross{position:absolute;left:50%;top:50%;color:white;font-size:24px;pointer-events:none;display:none;text-shadow:0 1px 4px #222}#walkpad{position:absolute;right:20px;top:84px;display:none;grid-template-columns:repeat(3,42px);gap:4px}#walkpad button{padding:10px;touch-action:none}#help{position:absolute;top:82px;left:20px;font-size:11px;background:#f7f5eddd;padding:7px 10px;pointer-events:none}#load{position:absolute;inset:0;display:grid;place-items:center;background:#eee9dd;z-index:5}dialog{max-width:min(590px,90vw);background:#f7f5ed;border:1px solid #777f70;padding:26px;color:#25362e}dialog p{margin:10px 0}#credit{font-size:10px;text-align:right}@media(max-width:720px){header{padding:9px 12px;height:62px}h1{font-size:17px}main{height:calc(100dvh - 62px)}#credit{max-width:120px}#tools{left:8px;top:8px;gap:4px}#tools button{padding:7px 9px;font-size:11px}#help{left:8px;top:66px;max-width:70%}#info{left:8px;bottom:8px;padding:10px;max-width:48%;font-size:10px}#info h2{font-size:15px}#info p{font-size:10px}#map{right:8px;bottom:8px;width:47%;padding:7px}#map .legend{font-size:9px}#places button{font-size:9px;padding:4px}#walkpad{right:8px;top:106px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script></head>
-<body><header><div><small>SHENZHEN · ARCHITECTURAL RESEARCH / 03</small><h1>滨河新村 <span style="font-weight:400">BINHE / WALK</span></h1></div><div id="credit">空间复原研究原型<br>Photo-constrained reconstruction · v0.4</div></header>
-<main><div id="viewport"></div><div id="load">正在加载三维空间…（需联网加载 Three.js）</div><div id="tools"><button id="orbit" class="active">鸟瞰 / Orbit</button><button id="ground">小老头漫游</button><button id="deck">二层连廊</button><button id="top">总平面</button><button id="shot">保存截图</button><button id="source">资料与精度</button></div><div id="help">拖动旋转 · 滚轮缩放 · 右键平移</div><div id="cross">+</div><div id="walkpad"><span></span><button data-key="KeyW">↑</button><span></span><button data-key="KeyA">←</button><button data-key="KeyS">↓</button><button data-key="KeyD">→</button></div>
+<body><header><div><small>SHENZHEN · ARCHITECTURAL RESEARCH / 03</small><h1>滨河新村 <span style="font-weight:400">BINHE / WALK</span></h1></div><div id="credit">空间复原研究原型<br>Photo-textured lightweight scene · v0.5</div></header>
+<main><div id="viewport"></div><div id="load">正在加载三维空间…（需联网加载 Three.js）</div><div id="tools"><button id="orbit" class="active">鸟瞰 / Orbit</button><button id="ground">小老头漫游</button><button id="deck">二层连廊</button><button id="top">总平面</button><button id="shot">保存截图</button><button id="source">资料与精度</button><button id="quality">画质：自动</button><span id="perf" style="font-size:10px;align-self:center;background:#f7f5eddd;padding:4px 7px;border-radius:3px"></span></div><div id="help">拖动旋转 · 滚轮缩放 · 右键平移</div><div id="cross">+</div><div id="walkpad"><span></span><button data-key="KeyW">↑</button><span></span><button data-key="KeyA">←</button><button data-key="KeyS">↓</button><button data-key="KeyD">→</button></div>
 <section id="info"><small id="section">01 / MASTERPLAN</small><h2 id="title">大空间住宅组团</h2><p id="description">1985年规划的三处公共空间、南北蝶式住宅、东西Y形住宅，以及中北部三幢高层。选择地图节点进入场景。</p><small>依据：陈达昌规划图及项目中期、结题照片。细部尺寸为估计。</small></section>
 <section id="map"><div class="legend"><b>总平面 / SITE PLAN</b><span>北 ↑ · 432 × 140 m</span></div><svg id="plan" viewBox="-216 -70 432 140" aria-label="模型总平面"></svg><div id="places"></div></section>
-<dialog id="about"><h2>资料与复原边界</h2><p><b>原始依据：</b>陈达昌《深圳滨河小区规划设计——大空间住宅小区实例》，1985，图1总鸟瞰、图2总平面、图3连廊、图4楼梯、图5住宅户型，印刷页20–24。</p><p>用地东西432m、南北140m；南北蝶式组团，东西Y式住宅；中北三幢30层钻石形高层；三处相互渗透的公共空间、白色二层连廊、林荫轴线和屋顶绿化。</p><p>立面采用原文色彩描述：金黄色瓷片檐口、略透红色的白墙、米黄色马赛克阳台、深褐花池、黑铁栏杆。具体RGB值是近似的。</p><p><b>不是测绘数字孪生：</b>模型依据扫描总平面人工估读布局，不等于逐栋实测；住宅具体数量、楼高（除30层高层外）、连廊宽高、道路、树木及设施位置均为示意性推定。本版保留1985年规划总体布局，基于新提供的六张现场照片重点重建中央庭院、环形连廊、弧形封闭阳台和日常使用痕迹。照片未完成相机标定；本版是照片约束几何模型及程序材质，不是真正训练的3D Gaussian Splatting，也不是某一日期的精确建成实况。未使用私人访谈或居民身份资料。</p><p>键盘 WASD/方向键控制小老头慢走，拖动观察；在二层模式沿连廊行走。小老头为原创示意角色。地图节点可切换视角。截图供研究对照。</p><form method="dialog"><button>关闭</button></form></dialog></main>
+<dialog id="about"><h2>资料与复原边界</h2><p><b>原始依据：</b>陈达昌《深圳滨河小区规划设计——大空间住宅小区实例》，1985，图1总鸟瞰、图2总平面、图3连廊、图4楼梯、图5住宅户型，印刷页20–24。</p><p>用地东西432m、南北140m；南北蝶式组团，东西Y式住宅；中北三幢30层钻石形高层；三处相互渗透的公共空间、白色二层连廊、林荫轴线和屋顶绿化。</p><p>立面采用原文色彩描述：金黄色瓷片檐口、略透红色的白墙、米黄色马赛克阳台、深褐花池、黑铁栏杆。具体RGB值是近似的。</p><p><b>不是测绘数字孪生：</b>模型依据扫描总平面人工估读布局，不等于逐栋实测；住宅具体数量、楼高（除30层高层外）、连廊宽高、道路、树木及设施位置均为示意性推定。本版保留1985年规划总体布局，基于新提供的六张现场照片重点重建中央庭院、环形连廊、弧形封闭阳台和日常使用痕迹。照片未完成相机标定；本版是照片约束几何模型及程序材质，不是真正训练的3D Gaussian Splatting，也不是某一日期的精确建成实况。V0.5使用共享材质纹理、分区实例化细节、远距离隐藏小件、树木实例化与自适应像素比；背景裁取同作者 community-memory-prototype 公开参考库中的 old-blocks-and-new-towers.jpg 和 square-from-elevated-walkway.jpg，照片仅作方向性天际线参照，未标定方位或距离，非完整360度实景。未使用私人访谈或居民身份资料。</p><p>键盘 WASD/方向键控制小老头慢走，拖动观察；在二层模式沿连廊行走。小老头为原创示意角色。地图节点可切换视角。截图供研究对照。</p><form method="dialog"><button>关闭</button></form></dialog></main>
 <script type="module">
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const $=id=>document.getElementById(id);
 const scene=new T.Scene();scene.background=new T.Color('#c5d9ec');scene.fog=new T.Fog('#c5d9ec',190,650);
 const camera=new T.PerspectiveCamera(55,1,.1,1600);camera.position.set(260,220,245);
-const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;$('viewport').append(renderer.domElement);
+const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;$('viewport').append(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,4,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2-.015;controls.minDistance=6;controls.maxDistance=750;controls.update();
 scene.add(new T.HemisphereLight(0xe1edff,0x858374,1.55));const sun=new T.DirectionalLight(0xfff0d4,2.35);sun.position.set(-65,95,48);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-67,right:67,top:67,bottom:-67,near:1,far:240});sun.shadow.bias=-.0004;sun.shadow.normalBias=.035;scene.add(sun);
 const P={wall:'#ded8c9',gold:'#b88a48',balcony:'#d3c6ad',rail:'#555b55',planter:'#6f4e3e',glass:'#617d83',roof:'#c5b7a3',ground:'#d6d0c1',paving:'#bcb9af',white:'#f1eee2',lawn:'#799761',leaf:'#50784c',leaf2:'#819d52',trunk:'#715743',road:'#8a9290',water:'#6ba5ab',concrete:'#a9a59c'};
-const cube=new T.BoxGeometry(1,1,1), material={}, batches={}, dummy=new T.Object3D(), obstacles=[], footprints=[], deckSegments=[];
+const cube=new T.BoxGeometry(1,1,1), material={}, batches={}, detailBatches={}, detailMeshes=[], foliageGroups=[], dummy=new T.Object3D(), obstacles=[], footprints=[], deckSegments=[];
+// Shared, lightweight material atlases; detail is mostly in pixels, not geometry.
+const atlas={};function texAtlas(kind){
+ if(atlas[kind])return atlas[kind];const cv=document.createElement('canvas');cv.width=cv.height=512;const c=cv.getContext('2d');let seed=71+kind.length*97;const rr=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+ const im=c.createImageData(512,512);for(let i=0;i<im.data.length;i+=4){let v=226+rr()*27;im.data[i]=v;im.data[i+1]=v-1;im.data[i+2]=v-3;im.data[i+3]=255}c.putImageData(im,0,0);
+ for(let i=0;i<600;i++){let x=rr()*512,y=rr()*512,rad=2+rr()*21;let g=c.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,'rgba(68,64,47,'+(rr()*.11)+')');g.addColorStop(1,'rgba(68,64,47,0)');c.fillStyle=g;c.fillRect(x-rad,y-rad,2*rad,2*rad)}
+ if(kind==='wall'||kind==='concrete'){for(let i=0;i<100;i++){let x=rr()*512,y=rr()*512,h=10+rr()*110;c.fillStyle='rgba(48,55,40,'+(rr()*.105)+')';c.fillRect(x,y,1+rr()*5,h)}}
+ if(kind==='paving'||kind==='concrete'){for(let i=0;i<12;i++){let x=rr()*512,y=rr()*512;c.beginPath();c.moveTo(x,y);for(let j=0;j<6;j++){x+=(rr()-.5)*21;y+=rr()*13;c.lineTo(x,y)}c.strokeStyle='rgba(52,54,48,.19)';c.lineWidth=.65;c.stroke()}}
+ const t=new T.CanvasTexture(cv);t.colorSpace=T.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());atlas[kind]=t;return t;
+}
 function mat(c){
- if(material[c])return material[c];
- const m=new T.MeshStandardMaterial({color:c,roughness:.87,metalness:0});
- if(['#ded8c9','#e9e6d8','#f1eee4','#a4aaa4','#bcb9af','#d0d2ca','#a9b0af','#b8bbb5','#c9c8bd','#c4bdb0','#dad5c7'].includes(c)){
-  const cv=document.createElement('canvas');cv.width=cv.height=128;const ctx=cv.getContext('2d');const im=ctx.createImageData(128,128);let k=12345;
-  for(let i=0;i<im.data.length;i+=4){k=(Math.imul(k,1664525)+1013904223)>>>0;let v=221+(k%34);im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}
-  ctx.putImageData(im,0,0);const tex=new T.CanvasTexture(cv);tex.colorSpace=T.SRGBColorSpace;tex.anisotropy=4;m.map=tex;
- }
+ if(material[c])return material[c];const m=new T.MeshStandardMaterial({color:c,roughness:.87,metalness:0});
+ let kind=['#ded8c9','#c4bdb0','#dad5c7','#d4cfc1','#bab5a8','#aaa99f'].includes(c)?'wall':['#bcb9af','#d0d2ca','#a9b0af','#b8bbb5','#c9c8bd','#aaa9a1','#c7c8c1','#b4aa99'].includes(c)?'paving':['#e9e6d8','#f1eee4','#a4aaa4','#9b9990'].includes(c)?'concrete':null;
+ if(kind){m.map=texAtlas(kind);m.bumpMap=m.map;m.bumpScale=kind==='paving'?.014:.018}
+ if(['#515b57','#536360','#84908e','#617d83'].includes(c)){m.roughness=.38;m.metalness=.13}
  return material[c]=m;
 }
-function box(x,y,z,w,h,d,c,rot=0){if(w<=0||h<=0||d<=0)return;const a=batches[c]??=[];dummy.position.set(x,y,z);dummy.rotation.set(0,rot,0);dummy.scale.set(w,h,d);dummy.updateMatrix();a.push(dummy.matrix.clone());}
+function box(x,y,z,w,h,d,c,rot=0){if(w<=0||h<=0||d<=0)return;
+ const max=Math.max(w,h,d),min=Math.min(w,h,d);const fine=(max<.92||min<.055&&max<2.95)&&y>.32;
+ const tileX=Math.floor(x/48),tileZ=Math.floor(z/48),key=tileX+','+tileZ+'|'+c;
+ const a=fine?(detailBatches[key]??=[]):(batches[c]??=[]);
+ dummy.position.set(x,y,z);dummy.rotation.set(0,rot,0);dummy.scale.set(w,h,d);dummy.updateMatrix();a.push(dummy.matrix.clone());
+}
 function shapeMesh(g,c,x,y,z,rx=0){const m=new T.Mesh(g,mat(c));m.position.set(x,y,z);m.rotation.x=rx;m.castShadow=true;m.receiveShadow=true;scene.add(m);return m}
-function outline(x,y,z,w,h,d,r=0){const l=new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(w,h,d)),new T.LineBasicMaterial({color:0x6f7165,transparent:true,opacity:.07}));l.position.set(x,y,z);l.rotation.y=r;scene.add(l)}
+function outline(){} // no redundant edge overlays
 function local(x,z,dx,dz,r){return [x+dx*Math.cos(r)+dz*Math.sin(r),z-dx*Math.sin(r)+dz*Math.cos(r)]}
 function wing(x,z,w,d,floors,r=0,base=0,mark=true){
  const h=floors*3.1;
@@ -155,7 +166,27 @@ function stairs(x,z,dir=1){for(let i=0;i<18;i++){let hh=(i+1)*3.35/18;box(x,hh/2
 for(let x of [-150,-43,43,150])stairs(x,35.8,1);for(let x of [-150,150])stairs(x,-35,-1);
 function bench(x,z,r=0){box(x,.5,z,2.4,.15,.65,'#81725b',r);box(x,.85,z-.28,2.4,.45,.09,'#81725b',r);for(let s of [-1,1]){let p=local(x,z,s*.85,0,r);box(p[0],.2,p[1],.25,.4,.5,'#a7aaa2',r)}}
 let seed=1337;function rnd(){seed=(1664525*seed+1013904223)>>>0;return seed/4294967296}
-function tree(x,z,h=6,planter=false){if(planter){disc(x,z,1.5,.6,'#a2a8a0',.2);disc(x,z,1.35,.08,'#797c66',.8)}let base=planter?.8:0;shapeMesh(new T.CylinderGeometry(.12,.32,h*.7,9),'#68604a',x,base+h*.35,z);for(let i=0;i<7;i++){let ang=i*2.399;let r=h*.24;let m=shapeMesh(new T.IcosahedronGeometry(h*.3,2),i%3===0?'#5c754d':i%3===1?'#476343':'#6a8156',x+Math.cos(ang)*r,base+h*.72+(i%3)*h*.10,z+Math.sin(ang)*r);m.scale.set(1.13,.78,1.05)}}
+// Tree canopy: shared instanced geometry + alpha-tested leaf cards, with distance culling.
+const trunks=[],crowns=[],leafCards=[];const leafCanvas=document.createElement('canvas');leafCanvas.width=leafCanvas.height=256;const lc=leafCanvas.getContext('2d');
+let ls=111;function lr(){ls=(Math.imul(ls,1664525)+1013904223)>>>0;return ls/4294967296}
+for(let i=0;i<1250;i++){let a=lr()*Math.PI*2,rad=Math.sqrt(lr())*(.94+.10*Math.sin(a*7)),x=128+Math.cos(a)*rad*116,y=128+Math.sin(a)*rad*116;lc.save();lc.translate(x,y);lc.rotate(lr()*Math.PI);lc.fillStyle=['#324c2c','#426035','#5e793d','#73894b','#849b55','#3b562f','#a1ac70'][Math.floor(lr()*7)];lc.beginPath();lc.ellipse(0,0,1.8+lr()*2.8,3.0+lr()*5.0,0,0,Math.PI*2);lc.fill();lc.restore()}
+const leafTex=new T.CanvasTexture(leafCanvas);leafTex.colorSpace=T.SRGBColorSpace;leafTex.anisotropy=4;
+function tree(x,z,h=6,planter=false){
+ if(planter){disc(x,z,1.5,.6,'#a2a8a0',.2);disc(x,z,1.35,.08,'#797c66',.8)}
+ const base=planter?.8:0;trunks.push([x,base+h*.35,z,.36,h*.70,.36,0,0]);
+ for(let j=0;j<4;j++){let a=j*1.57+.4;trunks.push([x+Math.cos(a)*h*.10,base+h*.59,z+Math.sin(a)*h*.10,.16,h*.37,.16,Math.sin(a)*.49,-Math.cos(a)*.49])}
+ for(let i=0;i<9;i++){let a=i*2.399,rad=h*(i===0?0:.22);let px=x+Math.cos(a)*rad,py=base+h*(.76+(i%3)*.07),pz=z+Math.sin(a)*rad;
+  crowns.push([px,py,pz,h*.25,h*.17,h*.24,0,0,i%3]);if(Math.abs(x)<72)for(let j=0;j<3;j++){leafCards.push([px,py,pz,h*.71,h*.58,1,(j%2)*.3,j*1.047,a])}
+ }
+}
+function instancedParts(g,m,arr,configure){if(!arr.length)return;const o=new T.InstancedMesh(g,m,arr.length);arr.forEach((v,i)=>{dummy.position.set(v[0],v[1],v[2]);dummy.scale.set(v[3],v[4],v[5]);dummy.rotation.set(0,0,0);configure(v,dummy);dummy.updateMatrix();o.setMatrixAt(i,dummy.matrix)});o.instanceMatrix.needsUpdate=true;o.computeBoundingSphere();o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
+function flushFoliage(){
+ instancedParts(new T.CylinderGeometry(.45,1,1,6),mat('#665d4b'),trunks,(v,d)=>d.rotation.set(v[6],0,v[7]));
+ const lowGeo=new T.IcosahedronGeometry(1,1);for(let k=0;k<3;k++)instancedParts(lowGeo,mat(['#496b39','#587540','#6a8548'][k]),crowns.filter(v=>v[8]===k),()=>{});
+ const cards=new T.MeshStandardMaterial({map:leafTex,alphaTest:.48,side:T.DoubleSide,roughness:1});
+ const o=instancedParts(new T.PlaneGeometry(1,1),cards,leafCards,(v,d)=>d.rotation.set(v[6],v[7]+v[8],0));if(o){o.castShadow=false;foliageGroups.push(o)}
+}
+
 for(let side of [-1,1]){for(let i=0;i<25;i++){let x=side*(63+rnd()*110),z=-27+rnd()*54;if(side===1&&Math.abs(x-112)<25&&Math.abs(z-1)<18)continue;tree(x,z,4.5+rnd()*4)}}
 for(let x of [-27,27])for(let z of [24,-16])tree(x,z,8.7,true);tree(7,-22,12);tree(-7,-23,11);
 for(let x of [-28,28]){disc(x,16,3.2,.7,'#a1a9a2',.18);disc(x,16,2.9,.08,'#587548',.88);for(let i=0;i<5;i++){let m=shapeMesh(new T.IcosahedronGeometry(1.65,2),'#3e6442',x+Math.sin(i*2.4)*.6,1.8+i*.05,16+Math.cos(i*2.4)*.6);m.scale.set(1.25,.85,1.2)}}
@@ -169,7 +200,39 @@ for(let i=0;i<26;i++){let x=-155+i*4.1,z=42.2;let color=['#3d4547','#a6a8a3','#6
  for(let level of [0,3.35]){let zz=z+(level?0:-5);let h=level;
   box(x,h+.43,zz,.52,.47,1.23,color);box(x,h+.72,zz-.17,.46,.15,.75,'#292e2d');box(x,h+.78,zz+.43,.10,.75,.10,'#69726e');box(x,h+1.14,zz+.43,.65,.065,.10,'#5a605b');for(let d of [-.48,.48])box(x,h+.24,zz+d,.20,.46,.39,'#333a39');
  }}
-for(const [c,arr] of Object.entries(batches)){const m=new T.InstancedMesh(cube,mat(c),arr.length);arr.forEach((mx,i)=>m.setMatrixAt(i,mx));m.instanceMatrix.needsUpdate=true;m.castShadow=true;m.receiveShadow=true;scene.add(m)}
+flushFoliage();
+for(const [c,arr] of Object.entries(batches)){const m=new T.InstancedMesh(cube,mat(c),arr.length);arr.forEach((mx,i)=>m.setMatrixAt(i,mx));m.instanceMatrix.needsUpdate=true;m.computeBoundingSphere();m.castShadow=true;m.receiveShadow=true;scene.add(m)}
+for(const [key,arr] of Object.entries(detailBatches)){let [xy,c]=key.split('|');let [x,z]=xy.split(',').map(Number);const m=new T.InstancedMesh(cube,mat(c),arr.length);arr.forEach((mx,i)=>m.setMatrixAt(i,mx));m.instanceMatrix.needsUpdate=true;m.computeBoundingSphere();m.castShadow=false;m.receiveShadow=true;scene.add(m);detailMeshes.push({m,x:x*48+24,z:z*48+24})}
+// CPU-side construction matrices are no longer needed after upload.
+for(const k of Object.keys(batches))delete batches[k];for(const k of Object.keys(detailBatches))delete detailBatches[k];trunks.length=crowns.length=leafCards.length=0;
+renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
+
+// Shenzhen backdrop: photographic cut-outs from the author's existing site reference library.
+// These are directional visual references, not a surveyed 360-degree panorama.
+const photoBase='https://raw.githubusercontent.com/YutongChenLailai/community-memory-prototype/main/public/reference-library/mobile-supplement/';
+const photoMat=new T.MeshBasicMaterial({transparent:true,alphaTest:.07,depthWrite:false,side:T.DoubleSide,toneMapped:false});
+function photoCard(file,crop,poly,x,z,w,h,angle,base=0){
+ const mesh=new T.Mesh(new T.PlaneGeometry(w,h),photoMat.clone());mesh.position.set(x,base+h/2,z);mesh.rotation.y=angle;mesh.visible=false;scene.add(mesh);
+ const img=new Image();img.crossOrigin='anonymous';img.onload=()=>{const cv=document.createElement('canvas');cv.width=256;cv.height=512;const c=cv.getContext('2d');
+  c.beginPath();poly.forEach((p,i)=>i?c.lineTo(p[0]*cv.width,p[1]*cv.height):c.moveTo(p[0]*cv.width,p[1]*cv.height));c.closePath();c.clip();
+  c.drawImage(img,crop[0]*img.width,crop[1]*img.height,crop[2]*img.width,crop[3]*img.height,0,0,cv.width,cv.height);
+  const t=new T.CanvasTexture(cv);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;mesh.material.map=t;mesh.material.needsUpdate=true;mesh.visible=true;
+ };img.src=photoBase+file+'.jpg';
+}
+// Photo of the actual modern cream/pink residential tower visible between the older blocks.
+const tallCut=[[.12,.98],[.12,.21],[.18,.12],[.33,.12],[.37,.06],[.56,.03],[.69,.07],[.80,.12],[.92,.13],[.93,1],[.12,1]];
+photoCard('old-blocks-and-new-towers',[.625,.15,.23,.75],tallCut,95,-113,46,110,0);
+photoCard('old-blocks-and-new-towers',[.625,.15,.23,.75],tallCut,-238,-90,43,104,Math.PI/3);
+photoCard('old-blocks-and-new-towers',[.625,.15,.23,.75],tallCut,245,60,43,108,-Math.PI/2);
+// Distant CBD apartment group from the same courtyard photograph, cropped above the rail.
+const cityCut=[[0,1],[0,.47],[.08,.47],[.08,.34],[.21,.34],[.21,.17],[.40,.17],[.40,.29],[.53,.29],[.53,.12],[.75,.12],[.75,.23],[.92,.23],[.92,.37],[1,.37],[1,1]];
+photoCard('square-from-elevated-walkway',[.72,.18,.12,.23],cityCut,34,-156,48,77,0);
+photoCard('square-from-elevated-walkway',[.72,.18,.12,.23],cityCut,150,133,58,86,Math.PI);
+photoCard('square-from-elevated-walkway',[.72,.18,.12,.23],cityCut,-120,142,51,81,Math.PI);
+// Surrounding simplified skyline, avoiding high polygon counts; photo cards sit behind the site.
+const skylineMat=new T.MeshStandardMaterial({color:'#a6b4be',roughness:.9});
+const skylineTex=document.createElement('canvas');skylineTex.width=128;skylineTex.height=256;const sk=skylineTex.getContext('2d');sk.fillStyle='#b9c5cd';sk.fillRect(0,0,128,256);for(let x=5;x<128;x+=13){sk.fillStyle='#778c9c';sk.fillRect(x,0,7,256);for(let y=3;y<256;y+=9){sk.fillStyle='#bfcbd0';sk.fillRect(x,y,7,2)}}const st=new T.CanvasTexture(skylineTex);st.colorSpace=T.SRGBColorSpace;skylineMat.map=st;
+for(let i=0;i<23;i++){const a=i*Math.PI*2/23+.3,rad=260+45*Math.sin(i*7),h=48+58*(.5+.5*Math.sin(i*2.3));const m=new T.Mesh(cube,skylineMat);m.position.set(Math.cos(a)*rad,h/2,Math.sin(a)*rad);m.scale.set(15+9*Math.abs(Math.sin(i)),h,13+8*Math.abs(Math.cos(i)));m.rotation.y=a+.2;scene.add(m)}
 const spots=[
 {key:'axis',label:'中轴 / 圆形场',x:0,z:29,y:0,yaw:0,title:'中心广场 · 六图现状复原',desc:'圆形二层连廊、白色镂空雕塑、围栏、放射铺地与棋盘地砖、青绿色长凳。尺度为图像推定。'},
 {key:'west',label:'西侧庭院',x:-112,z:24,y:0,yaw:0,title:'西侧共享庭院',desc:'大空间设计让绿地集中，树石、水池及活动空间形成独立而渗透的庭院。'},
@@ -220,6 +283,11 @@ window.addEventListener('keydown',e=>{if(!controls.enabled&&['KeyW','KeyA','KeyS
 document.querySelectorAll('[data-key]').forEach(b=>{b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(b.dataset.key)};b.onpointerup=b.onpointercancel=()=>keys.delete(b.dataset.key);b.onlostpointercapture=()=>keys.delete(b.dataset.key)});
 let drag=false,lastX=0,lastY=0;const can=renderer.domElement;can.addEventListener('pointerdown',e=>{if(controls.enabled)return;drag=true;lastX=e.clientX;lastY=e.clientY;can.setPointerCapture(e.pointerId)});can.addEventListener('pointermove',e=>{if(!drag||controls.enabled)return;yaw-=(e.clientX-lastX)*.0035;pitch=Math.max(-1.35,Math.min(1.35,pitch-(e.clientY-lastY)*.0035));lastX=e.clientX;lastY=e.clientY;orient()});can.addEventListener('pointerup',()=>drag=false);can.addEventListener('pointercancel',()=>drag=false);can.addEventListener('lostpointercapture',()=>drag=false);
 function resize(){let w=$('viewport').clientWidth,h=$('viewport').clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe($('viewport'));resize();
-function tick(){requestAnimationFrame(tick);let dt=Math.min(clock.getDelta(),.05);if(controls.enabled){controls.update()}else{let f=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),s=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let moved=false;if(f||s){let n=Math.hypot(f,s),speed=1.12*dt/n,dx=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*speed,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*speed;const allow=(x,z)=>mode==='deck'?onDeck(x,z):!blocked(x,z);if(dx&&allow(walker.x+dx,walker.z)){walker.x+=dx;moved=true}if(dz&&allow(walker.x,walker.z+dz)){walker.z+=dz;moved=true}}gait(dt,moved);follow()}let p=controls.enabled?controls.target:walker;marker.setAttribute('cx',Math.max(-213,Math.min(213,p.x)));marker.setAttribute('cy',Math.max(-68,Math.min(68,p.z)));renderer.render(scene,camera)}
+let quality=0,frames=0,elapsed=0,lastScale=Math.min(devicePixelRatio,1.5),lodFrame=0;
+$('quality').onclick=()=>{quality=(quality+1)%3;$('quality').textContent=['画质：自动','画质：精细','画质：省电'][quality];lastScale=Math.min(devicePixelRatio,quality===2?1:quality===1?1.8:1.5);renderer.setPixelRatio(lastScale);resize()};
+function updateDetail(){let range=quality===2?45:quality===1?105:75;for(const d of detailMeshes)d.m.visible=mode!=='top'&&Math.hypot(camera.position.x-d.x,camera.position.z-d.z)<range+34&&camera.position.y<range;for(const o of foliageGroups)o.visible=mode!=='top'&&camera.position.y<70&&Math.abs(camera.position.x)<110}
+function tick(){requestAnimationFrame(tick);let dt=Math.min(clock.getDelta(),.05);if(controls.enabled){controls.update()}else{let f=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),s=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let moved=false;if(f||s){let n=Math.hypot(f,s),speed=1.12*dt/n,dx=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*speed,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*speed;const allow=(x,z)=>mode==='deck'?onDeck(x,z):!blocked(x,z);if(dx&&allow(walker.x+dx,walker.z)){walker.x+=dx;moved=true}if(dz&&allow(walker.x,walker.z+dz)){walker.z+=dz;moved=true}}gait(dt,moved);follow()}let p=controls.enabled?controls.target:walker;marker.setAttribute('cx',Math.max(-213,Math.min(213,p.x)));marker.setAttribute('cy',Math.max(-68,Math.min(68,p.z)));if(++lodFrame%12===1)updateDetail();renderer.render(scene,camera);
+ frames++;elapsed+=dt;if(elapsed>2){const fps=frames/elapsed;$('perf').textContent=Math.round(fps)+' FPS · '+Math.round(renderer.info.render.triangles/1000)+'k tris';if(quality===0&&fps<28&&lastScale>.8){lastScale=Math.max(.8,lastScale-.15);renderer.setPixelRatio(lastScale);resize()}else if(quality===0&&fps>55&&lastScale<Math.min(devicePixelRatio,1.5)){lastScale=Math.min(devicePixelRatio,1.5,lastScale+.1);renderer.setPixelRatio(lastScale);resize()}frames=0;elapsed=0}
+}
 $('load').style.display='none';setMode('ground');tick();
 </script></body></html>
